@@ -1,21 +1,57 @@
 #include <iostream>
 using namespace std;
 
-template <typename T>
-void insertionSort(T d[],int N){
-for (int i = 1; i < N; i++) {
-        T key = d[i];
-        int j = i - 1;
+const int N = 5;
 
-        while (j >= 0 && d[j] < key) {
-            d[j + 1] = d[j];
-            j = j - 1;
+void inputMatrix(double [][N]);
+void findLocalMax(double [][N], bool [][N]);
+void showMatrix(bool [][N]);
+
+int main(){
+	double A[N][N]; 
+	bool B[N][N]; 
+	cout << "Input the matrix.....\n";
+	inputMatrix(A);
+	findLocalMax(A,B);
+	cout << "Result is\n";
+	showMatrix(B);
+	return 0;
+}
+
+
+void inputMatrix(double mat[][N]) {
+    for (int i = 0; i < N; i++) {
+        cout << "Row " << i + 1 << ": ";
+        for (int j = 0; j < N; j++) {
+            cin >> mat[i][j];
         }
-        d[j + 1] = key;
+    }
+}
 
-        cout << "Pass " << i << ":";
-        for (int k = 0; k < N; k++) {
-            cout << d[k] << (k == N - 1 ? "" : " ");
+void findLocalMax(double A[][N], bool B[][N]) {
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            if (i == 0 || i == N - 1 || j == 0 || j == N - 1) {
+                B[i][j] = false;
+            } 
+            else {
+                if (A[i][j] >= A[i-1][j] &&
+                    A[i][j] >= A[i+1][j] &&
+                    A[i][j] >= A[i][j-1] &&
+                    A[i][j] >= A[i][j+1]) {
+                    B[i][j] = true;
+                } else {
+                    B[i][j] = false;
+                }
+            }
+        }
+    }
+}
+
+void showMatrix(bool B[][N]) {
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            cout << B[i][j] << " ";
         }
         cout << "\n";
     }
